@@ -21,4 +21,4 @@ pytest
 basedpyright
 ```
 
-*Note: Prepend `uv run ` to commands if not in the virtual environment.*
+*Note: Prepend `uv run` to commands if not in the virtual environment.*
