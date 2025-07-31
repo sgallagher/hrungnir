@@ -1,0 +1,23 @@
+name: CI
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the latest version of uv and set the python version to 3.13
+        uses: astral-sh/setup-uv@v6
+        # Caching is enabled by default on GitHub-hosted runners.
+        with:
+          python-version: 3.13
+
+      - name: Run Ruff
+        # Update output format to enable automatic inline annotations.
+        run: uv run ruff check --output-format=github .
+
+      - name: Run Pytest
+        run: uv run pytest
+
+      - name: Run basedpyright
+        run: uv run basedpyright

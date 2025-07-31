@@ -1,0 +1,130 @@
+[build-system]
+requires = ["uv_build>=0.8.4,<0.9.0"]
+build-backend = "uv_build"
+
+[project]
+name = "hrungnir" # TODO
+version = "0.1.0"
+description = "MCP Server providing tools to help with RHEL, CentOS Stream, Fedora packaging"  # TODO
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=2.10.6",
+    "httpx>=0.28.1",
+    "asyncio-throttle>=1.0.2",
+    "packitos>=1.11.0",
+    "specfile>=0.36.0",
+    "pydantic>=2.11.7",
+    "pygit2>=1.18.1",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.4",
+    "ogr>=0.55.0",
+]
+
+[project.scripts]
+hrungnir = "hrungnir.server:main"
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.31.0",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "ruff>=0.12.7",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+# Enable reformatting of code snippets in docstrings.
+docstring-code-format = true
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+select = [
+    "YTT",
+    "ANN",
+    "ASYNC",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "T10",
+    "FA",
+    "ISC",
+    "ICN",
+    "LOG",
+    "G",
+    "LOG",
+    "INP",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SLF",
+    "SIM",
+    "SLOT",
+    "TID",
+    "TC",
+    "ARG",
+    "PTH",
+    "FLY",
+    "I",
+    "C90",
+    "N",
+    "E",
+    "W",
+    "D",
+    "F",
+    "PGH",
+    "PL",
+    "UP",
+    "FURB",
+    "RUF",
+    "TRY",
+]
+
+ignore = [
+    # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "E501",  # Line too long - formatter is doing best effort
+    "D206",
+    "D300",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "ISC002",
+]
+
+[tool.ruff.lint.per-file-ignores]
+    "tests/**" = [
+    "S",
+    "ANN",
+    "PLC",
+    "PLR2004",
+    ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"  # https://mkdocstrings.github.io/griffe/reference/docstrings/#parsers-features
+
+[tool.basedpyright]
+include = ["src", "tests"]
+typeCheckingMode = "standard"  # Less strict than "strict" but more than "basic"
+venvPath = "."
+venv = ".venv"
