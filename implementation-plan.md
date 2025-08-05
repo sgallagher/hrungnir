@@ -200,29 +200,93 @@ async def suggest_build_labels(
 
 ### Build Readiness Checker Tool (Concept)
 
-**Concept**: Preventing common build failures through pre-flight validation
+**Concept**: Comprehensive pre-flight validation with gating intelligence and failure prediction
 
 **Proposed Interface**:
 
 ```python
 @tool
 async def check_build_readiness(
-    package: str, target_branch: str = "c10s", check_dependencies: bool = True
+    package: str,
+    target_branch: str = "c10s",
+    check_dependencies: bool = True,
+    include_gating_analysis: bool = True,
+    historical_lookback_days: int = 30,
 ) -> BuildReadinessReport:
     """
     Comprehensive pre-flight validation to avoid build failures.
+    Includes gating status monitoring and failure prediction based on historical patterns.
 
-    Validation approach will be refined during library evaluation phase.
+    Integration points:
+    - RHEL CI + CentOS Stream CI gating systems
+    - PackitAPI for automation status
+    - Koji build system for dependency analysis
+    - Historical gating data for failure prediction
     """
 ```
 
 **Conceptual Validation Areas**:
+
+#### Core Validation
 
 - Package configuration syntax and completeness
 - Build target compatibility with RoG pipeline
 - Spec file validation using selected parsing library
 - Source availability and dependency resolution
 - Branch-specific requirements analysis
+
+#### Gating Integration & Intelligence
+
+- **Gating Status Monitoring**: Real-time status of packages in gating pipeline
+
+  - Current position in c10s-gate → c10s-candidate → c10s-pending progression
+  - RHEL CI test results and pending/failed tests identification
+  - CentOS Stream CI status and known environmental issues
+  - Estimated time to complete gating based on current queue depth
+
+- **Historical Gating Pattern Analysis**:
+
+  - Package-specific gating failure rates over configurable time periods
+  - Common failure patterns by package type (kernel, Java, systemd, etc.)
+  - Correlation analysis between dependency changes and gating failures
+  - Time-of-day and day-of-week failure pattern recognition
+  - Maintainer response time patterns for gating failures
+
+- **Predictive Failure Assessment**:
+
+  - Risk scoring based on recent upstream changes and their gating impact
+  - Dependency chain risk propagation (if dep A fails gating, packages B, C at risk)
+  - Architecture-specific failure prediction (x86_64 vs aarch64 vs s390x patterns)
+  - Integration with RoG pipeline resource allocation patterns
+
+#### Advanced Risk Mitigation
+
+- **Proactive Dependency Validation**:
+
+  - Cross-reference with packages currently failing in gating
+  - Identify potentially problematic dependencies before build submission
+  - Suggest alternative build timing based on dependency gating status
+
+- **Build Coordination Intelligence**:
+
+  - Detection of conflicting chain builds that might interfere
+  - Side tag conflict prediction and resolution suggestions
+  - Resource contention analysis (large package builds competing for resources)
+
+- **Automated Fallback Recommendations**:
+
+  - Alternative build targets if primary target shows high failure risk
+  - Draft build suggestions for faster iteration during development
+  - Suggested test subset execution for faster feedback loops
+
+#### Gating Data Sources & Integration
+
+- **RHEL CI Pipeline**: Test execution status, failure logs, environmental issues
+- **CentOS Stream CI**: Stream-specific test results and known issues
+- **Koji Build System**: Build dependency status, buildroot package availability
+- **PackitAPI Integration**: Automation status, PR synchronization delays
+- **Historical Build Database**: Pattern analysis from past builds and outcomes
+- **RoG Pipeline Metrics**: Resource usage, timing patterns, success rates
 
 *Additional tools to be added to this section*
 
