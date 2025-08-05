@@ -1,5 +1,5 @@
 """Data models and schemas for packaging workflows.
 
 Defines Pydantic models for packages, builds, dependencies,
-and other packaging-related data structures.
+gating intelligence, and other packaging-related data structures.
 """
