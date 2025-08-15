@@ -5,20 +5,22 @@ build-backend = "uv_build"
 [project]
 name = "hrungnir" # TODO
 version = "0.1.0"
-description = "MCP Server providing tools to help with RHEL, CentOS Stream, Fedora packaging"  # TODO
+description = "MCP Server providing tools to help with RHEL, CentOS Stream, Fedora packaging" # TODO
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastmcp>=2.10.6",
     "httpx>=0.28.1",
     "asyncio-throttle>=1.0.2",
-    #"packitos>=1.11.0",  # TODO Only enable if needed - avoid pulling/building dependencies for authentication
-    "specfile>=0.36.0",
+    #"packitos>=1.11.0", # TODO Only enable if needed - avoid pulling/building dependencies for authentication
+    #"specfile>=0.36.0",
     "pydantic>=2.11.7",
     "pygit2>=1.18.1",
     "pyyaml>=6.0.2",
     "requests>=2.32.4",
-    "ogr>=0.55.0",
+    #"ogr>=0.55.0",
+    "python-rpm-spec>=0.16.0",
+    "python-gitlab[graphql]>=6.2.0",
 ]
 
 [project.scripts]
@@ -100,7 +102,7 @@ ignore = [
     "E111",
     "E114",
     "E117",
-    "E501",  # Line too long - formatter is doing best effort
+    "E501",   # Line too long - formatter is doing best effort
     "D206",
     "D300",
     "Q000",
@@ -110,21 +112,20 @@ ignore = [
     "COM812",
     "COM819",
     "ISC002",
+    "G004",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-    "tests/**" = [
-    "S",
-    "ANN",
-    "PLC",
-    "PLR2004",
-    ]
+"tests/**" = ["S", "ANN", "PLC", "PLR2004", "BLE"]
+
+[tool.ruff.lint.pylint]
+max-args = 6
 
 [tool.ruff.lint.pydocstyle]
-convention = "google"  # https://mkdocstrings.github.io/griffe/reference/docstrings/#parsers-features
+convention = "google" # https://mkdocstrings.github.io/griffe/reference/docstrings/#parsers-features
 
 [tool.basedpyright]
 include = ["src", "tests"]
-typeCheckingMode = "standard"  # Less strict than "strict" but more than "basic"
+typeCheckingMode = "standard" # Less strict than "strict" but more than "basic"
 venvPath = "."
 venv = ".venv"
